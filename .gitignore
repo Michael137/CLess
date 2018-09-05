@@ -1,7 +1,7 @@
 *.out
 *.o
 antlr-build/
-antlr/*.java
-antlr/*.class
-antlr/*.interp
-antlr/*.tokens
+*.java
+*.class
+*.interp
+*.tokens
