@@ -1,3 +1,5 @@
+all: clean tags build_sample build_board build_menu
+
 .PHONY:
 clean:
 	rm -f a.out
@@ -16,10 +18,9 @@ build_board:
 
 .PHONY:
 build_menu:
-	gcc menu.c -lncurses -o menu.out
+	gcc menu.c -lmenu -lncurses -o menu.out
 
 .PHONY:
 tags:
 	ctags *
 
-all: clean tags build_sample build_board build_menu
