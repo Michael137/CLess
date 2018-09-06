@@ -2,6 +2,7 @@
 #define CONSTANTS_H_IN
 
 #include <stdio.h>
+#include <ncurses.h>
 
 // Unicode
 #define B_PAWN_UCS 0x2659
@@ -32,6 +33,24 @@
 
 // Debug helpers
 #define PRINT_PIECE( COL, PIECE ) printf( "%lc\n", COL##_##PIECE##_UCS );
+#define PRINTW_PIECE( COL, PIECE ) printw( "%lc\n", COL##_##PIECE##_UCS );
+
+static inline void printw_pieces()
+{
+	PRINTW_PIECE( B, PAWN );
+	PRINTW_PIECE( B, ROOK );
+	PRINTW_PIECE( B, KNIGHT );
+	PRINTW_PIECE( B, BISHOP );
+	PRINTW_PIECE( B, QUEEN );
+	PRINTW_PIECE( B, KING );
+
+	PRINTW_PIECE( W, PAWN );
+	PRINTW_PIECE( W, ROOK );
+	PRINTW_PIECE( W, KNIGHT );
+	PRINTW_PIECE( W, BISHOP );
+	PRINTW_PIECE( W, QUEEN );
+	PRINTW_PIECE( W, KING );
+}
 
 static inline void print_pieces()
 {

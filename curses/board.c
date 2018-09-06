@@ -1,6 +1,7 @@
 #include "constants.h"
 #include <ncurses.h>
 #include <stdbool.h>
+#include <locale.h>
 
 void draw_board_border( WINDOW** board )
 {
@@ -68,6 +69,7 @@ int main()
 	initscr();
 	cbreak();
 	keypad( stdscr, TRUE );
+	setlocale( LC_ALL, "en_US.UTF8" );
 
 	height = BOARD_HEIGHT;
 	width = BOARD_WIDTH;
