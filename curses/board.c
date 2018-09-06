@@ -46,9 +46,9 @@ void fill_board( WINDOW** board )
 		for( x = startx + x_offset + BOARD_BORDER_WIDTH;
 			 x < maxx - BOARD_BORDER_WIDTH; x += SQUARE_WIDTH * 2 ) {
 			for( int i = 0; i < SQUARE_HEIGHT; ++i ) {
-				attron( COLOR_PAIR( W_SQUARE_COLOR ) );
+				//attron( COLOR_PAIR( W_SQUARE_COLOR ) );
 				mvwchgat( *board, y + i, x, SQUARE_WIDTH, A_REVERSE, 0, NULL );
-				attroff( COLOR_PAIR( W_SQUARE_COLOR ) );
+				//attroff( COLOR_PAIR( W_SQUARE_COLOR ) );
 			}
 		}
 
@@ -82,8 +82,8 @@ int main()
 	}
 
 	start_color();
-	init_pair( W_SQUARE_COLOR, W_SQUARE_FG, W_SQUARE_BG );
-	init_pair( B_SQUARE_COLOR, B_SQUARE_FG, B_SQUARE_BG );
+//	init_pair( W_SQUARE_COLOR, W_SQUARE_FG, W_SQUARE_BG );
+//	init_pair( B_SQUARE_COLOR, B_SQUARE_FG, B_SQUARE_BG );
 
 	height = BOARD_HEIGHT;
 	width = BOARD_WIDTH;
