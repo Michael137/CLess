@@ -5,15 +5,17 @@
 void draw_board_border( WINDOW** board )
 {
 	wborder( *board, '|', '|', '-', '-', '+', '+', '+', '+' );
-	// int y, x, maxy, maxx;
-	// getyx( *board, y, x );
-	// getmaxyx( *board, maxy, maxx );
+	int y, x, maxy, maxx;
+	getyx( *board, y, x );
+	getmaxyx( *board, maxy, maxx );
 
-	// for( x += 1; x < maxx - 4; x += 4 )
-	//	mvwprintw( *board, maxy - 1, x, "| %c |", x / 4 + 'a' );
+	// Label squares 'A'->'H' on the bottom side of the board
+	for( char ch = 'A'; ch <= 'H'; x += SQUARE_WIDTH, ++ch )
+		mvwprintw( *board, maxy - 1, x + ( SQUARE_WIDTH / 2 ) + 2, "%c", ch );
 
-	// for( y += 1; y < maxy - 2; y += 2 )
-	//	mvwprintw( *board, y, 0, "%d", y / 2 );
+	// Number squares 8 -> 1 on the left side of the board
+	for( int num = 8; num > 0; y += SQUARE_HEIGHT, --num )
+		mvwprintw( *board, y + ( SQUARE_HEIGHT / 2 ) + 1, 0, "%d", num );
 
 	wrefresh( *board );
 	wmove( *board, 0, 0 );
@@ -37,8 +39,10 @@ void fill_board( WINDOW** board )
 	int x, y;
 	int x_offset = 0;
 	bool with_offset = false;
-	for( y = starty; y < maxy; y += SQUARE_HEIGHT ) {
-		for( x = startx + x_offset; x < maxx; x += SQUARE_WIDTH * 2 ) {
+	for( y = starty + BOARD_BORDER_HEIGHT; y < maxy - BOARD_BORDER_HEIGHT;
+		 y += SQUARE_HEIGHT ) {
+		for( x = startx + x_offset + BOARD_BORDER_WIDTH;
+			 x < maxx - BOARD_BORDER_WIDTH; x += SQUARE_WIDTH * 2 ) {
 			for( int i = 0; i < SQUARE_HEIGHT; ++i )
 				mvwchgat( *board, y + i, x, SQUARE_WIDTH, A_REVERSE, 0, NULL );
 		}
