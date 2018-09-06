@@ -3,6 +3,7 @@ clean:
 	rm -f a.out
 	rm -f sample.out
 	rm -f board.out
+	rm -f tags
 
 .PHONY:
 build_sample:
