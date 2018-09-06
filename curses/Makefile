@@ -12,4 +12,8 @@ build_sample:
 build_board:
 	gcc board.c -lncurses -o board.out
 
-all: clean build_sample build_board
+.PHONY:
+tags:
+	ctags *
+
+all: clean tags build_sample build_board

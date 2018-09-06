@@ -5,3 +5,4 @@ antlr-build/
 *.class
 *.interp
 *.tokens
+tags
