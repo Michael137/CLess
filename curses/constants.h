@@ -1,9 +1,6 @@
 #ifndef CONSTANTS_H_IN
 #define CONSTANTS_H_IN
 
-#include <stdio.h>
-#include <ncurses.h>
-
 // Unicode
 #define B_PAWN_UCS 0x2659
 #define B_ROOK_UCS 0x2656
@@ -19,54 +16,22 @@
 #define W_QUEEN_UCS 0x265B
 #define W_KING_UCS 0x265A
 
-// Board
-//#define W_SQUARE_COL 0
-//#define B_SQUARE_COL
+// Squares
 #define SQUARE_HEIGHT 3
 #define SQUARE_WIDTH 7
+#define W_SQUARE_FG COLOR_BLUE
+#define W_SQUARE_BG COLOR_BLUE
+#define B_SQUARE_FG COLOR_RED
+#define B_SQUARE_BG COLOR_RED
+#define W_SQUARE_COLOR 136
+#define B_SQUARE_COLOR 137
+
+// Board
 #define BOARD_BORDER_HEIGHT ( SQUARE_HEIGHT / 2 )
 #define BOARD_BORDER_WIDTH ( SQUARE_WIDTH / 2 - 1 )
 #define BOARD_NO_BORDER_HEIGHT ( SQUARE_HEIGHT * 8 )
 #define BOARD_NO_BORDER_WIDTH ( SQUARE_WIDTH * 8 )
 #define BOARD_HEIGHT BOARD_NO_BORDER_HEIGHT + 2 * BOARD_BORDER_HEIGHT
 #define BOARD_WIDTH BOARD_NO_BORDER_WIDTH + 2 * BOARD_BORDER_WIDTH
-
-// Debug helpers
-#define PRINT_PIECE( COL, PIECE ) printf( "%lc\n", COL##_##PIECE##_UCS );
-#define PRINTW_PIECE( COL, PIECE ) printw( "%lc\n", COL##_##PIECE##_UCS );
-
-static inline void printw_pieces()
-{
-	PRINTW_PIECE( B, PAWN );
-	PRINTW_PIECE( B, ROOK );
-	PRINTW_PIECE( B, KNIGHT );
-	PRINTW_PIECE( B, BISHOP );
-	PRINTW_PIECE( B, QUEEN );
-	PRINTW_PIECE( B, KING );
-
-	PRINTW_PIECE( W, PAWN );
-	PRINTW_PIECE( W, ROOK );
-	PRINTW_PIECE( W, KNIGHT );
-	PRINTW_PIECE( W, BISHOP );
-	PRINTW_PIECE( W, QUEEN );
-	PRINTW_PIECE( W, KING );
-}
-
-static inline void print_pieces()
-{
-	PRINT_PIECE( B, PAWN );
-	PRINT_PIECE( B, ROOK );
-	PRINT_PIECE( B, KNIGHT );
-	PRINT_PIECE( B, BISHOP );
-	PRINT_PIECE( B, QUEEN );
-	PRINT_PIECE( B, KING );
-
-	PRINT_PIECE( W, PAWN );
-	PRINT_PIECE( W, ROOK );
-	PRINT_PIECE( W, KNIGHT );
-	PRINT_PIECE( W, BISHOP );
-	PRINT_PIECE( W, QUEEN );
-	PRINT_PIECE( W, KING );
-}
 
 #endif // CONSTANTS_H_IN
