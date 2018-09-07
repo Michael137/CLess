@@ -1,103 +1,100 @@
 #include <menu.h>
+#include <ncurses.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ncurses.h>
 
 #define ARRAY_SIZE( a ) ( sizeof( a ) / sizeof( a[0] ) )
-#define CTRLD 4
+#define ARRAY_AGG_LEN( a, var )                                                \
+	int var = 0;                                                               \
+	for( int i__ = 0; i__ < ARRAY_SIZE( a ); ++i__ )                           \
+		var += strlen( a[i__] );
 
-char* choices[] = {
-	"Choice 1", "Choice 2", "Choice 3", "Choice 4", "Exit", (char*)NULL,
+char* choices[] = {"[I] Play", "[O] Load PGN", "[R] Singleplayer", "[Q]uit"};
+
+enum SelectionModes
+{
+	NORMAL_MODE = 0,
+	INSERT_MODE,
+
+	NULL_MODE
 };
-void print_in_middle( WINDOW* win, int starty, int startx, int width,
-					  char* string, chtype color );
+
+static int mode;
 
 int main()
 {
-	ITEM** my_items;
-	int c;
-	MENU* my_menu;
-	WINDOW* my_menu_win;
-	int n_choices, i;
+	WINDOW* menu_win;
+	MENU* menu;
+	ITEM** items;
 
-	/* Initialize curses */
+	mode = NORMAL_MODE;
+
+	// Initialize curses system
 	initscr();
-	start_color();
 	cbreak();
 	noecho();
 	keypad( stdscr, TRUE );
-	init_pair( 1, COLOR_RED, COLOR_BLACK );
 
-	/* Create items */
-	n_choices = ARRAY_SIZE( choices );
-	my_items = (ITEM**)calloc( n_choices, sizeof( ITEM* ) );
-	for( i = 0; i < n_choices; ++i )
-		my_items[i] = new_item( choices[i], choices[i] );
+	// Create window
+	int n_choices = ARRAY_SIZE( choices );
+	ARRAY_AGG_LEN( choices, choices_len );
 
-	/* Crate menu */
-	my_menu = new_menu( (ITEM**)my_items );
+	int const win_width = choices_len * 2;
+	int const win_height = 3;
 
-	/* Create the window to be associated with the menu */
-	my_menu_win = newwin( 10, 40, 4, 4 );
-	keypad( my_menu_win, TRUE );
-
-	/* Set main window and sub window */
-	set_menu_win( my_menu, my_menu_win );
-	set_menu_sub( my_menu, derwin( my_menu_win, 6, 38, 3, 1 ) );
-
-	/* Set menu mark to the string " * " */
-	set_menu_mark( my_menu, " * " );
-
-	/* Print a border around the main window and print a title */
-	box( my_menu_win, 0, 0 );
-	print_in_middle( my_menu_win, 1, 0, 40, "My Menu", COLOR_PAIR( 1 ) );
-	mvwaddch( my_menu_win, 2, 0, ACS_LTEE );
-	mvwhline( my_menu_win, 2, 1, ACS_HLINE, 38 );
-	mvwaddch( my_menu_win, 2, 39, ACS_RTEE );
-	mvprintw( LINES - 2, 0, "F1 to exit" );
+	menu_win = newwin( win_height, win_width, 0, 0 );
+	keypad( menu_win, TRUE );
+	box( menu_win, 0, 0 );
 	refresh();
 
-	/* Post the menu */
-	post_menu( my_menu );
-	wrefresh( my_menu_win );
+	// Create items
+	items = (ITEM**)calloc( n_choices, sizeof( ITEM* ) );
+	for( int i = 0; i < n_choices; ++i )
+		items[i] = new_item( choices[i], NULL );
 
-	while( ( c = wgetch( my_menu_win ) ) != KEY_F( 1 ) ) {
-		switch( c ) {
-		case KEY_DOWN:
-			menu_driver( my_menu, REQ_DOWN_ITEM );
+	// Create menu
+	menu = new_menu( items );
+	menu_opts_off( menu, O_SHOWDESC );
+
+	// Set main window and sub window
+	int const height_offset = 1;
+	int const width_offset = 1;
+	set_menu_win( menu, menu_win );
+	set_menu_sub( menu, derwin( menu_win, win_height - height_offset,
+								win_width - width_offset, height_offset,
+								width_offset ) );
+	set_menu_format( menu, 1, n_choices );
+	set_menu_mark( menu, ">" );
+
+	refresh();
+
+	post_menu( menu );
+	wrefresh( menu_win );
+
+	int ch_in;
+	while( 1 ) {
+		ch_in = wgetch( menu_win );
+		switch( ch_in ) {
+		case 'q':
+			goto CLEANUP;
+		case 'i':
+			mode = INSERT_MODE;
+			// TODO: update menu icons here
 			break;
-		case KEY_UP:
-			menu_driver( my_menu, REQ_UP_ITEM );
-			break;
+		case 'l':
+			// TODO: load pgn file
+		case 'r':
+			// TODO: switch game mode
+		default:
+			mvwprintw( stdscr, 50, 0, "Input: %c", ch_in );
+			refresh();
 		}
-		wrefresh( my_menu_win );
 	}
 
-	/* Unpost and free all the memory taken up */
-	unpost_menu( my_menu );
-	free_menu( my_menu );
-	for( i = 0; i < n_choices; ++i )
-		free_item( my_items[i] );
+CLEANUP:
+	unpost_menu( menu );
+	free_menu( menu );
+	for( int i = 0; i < n_choices; ++i )
+		free_item( items[i] );
 	endwin();
-}
-
-void print_in_middle( WINDOW* win, int starty, int startx, int width,
-					  char* string, chtype color )
-{
-	int length, x, y;
-	float temp;
-
-	if( win == NULL ) win = stdscr;
-	getyx( win, y, x );
-	if( startx != 0 ) x = startx;
-	if( starty != 0 ) y = starty;
-	if( width == 0 ) width = 80;
-
-	length = strlen( string );
-	temp = ( width - length ) / 2;
-	x = startx + (int)temp;
-	wattron( win, color );
-	mvwprintw( win, y, x, "%s", string );
-	wattroff( win, color );
-	refresh();
 }
