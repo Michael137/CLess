@@ -74,21 +74,37 @@ int main()
 	int ch_in;
 	while( 1 ) {
 		ch_in = wgetch( menu_win );
-		switch( ch_in ) {
-		case 'q':
-			goto CLEANUP;
-		case 'i':
-			mode = INSERT_MODE;
-			// TODO: update menu icons here
-			break;
-		case 'l':
-			// TODO: load pgn file
-		case 'r':
-			// TODO: switch game mode
-		default:
+		if( mode == NORMAL_MODE || ch_in == 27 ) {
+			switch( ch_in ) {
+			case 'q':
+				mvwprintw( stdscr, 40, 0, "Exiting..." );
+				refresh();
+				wrefresh( menu_win );
+				sleep( 1 /* seconds */ );
+				goto CLEANUP;
+			case 'i':
+				mode = INSERT_MODE;
+				// TODO: update menu icons here
+				mvwprintw( stdscr, 40, 0, "Insert mode enabled (%c)", ch_in );
+				break;
+			case 'o':
+				// TODO: load pgn file
+				mvwprintw( stdscr, 40, 0, "Loading PGN file..." );
+				break;
+			case 'r':
+				// TODO: switch game mode
+				mvwprintw( stdscr, 40, 0, "Changing game mode..." );
+				break;
+			case 27: /* ESC */
+				mode = NORMAL_MODE;
+				mvwprintw( stdscr, 40, 0, "Normal mode enabled (%c)", ch_in );
+				break;
+			}
+		} else {
 			mvwprintw( stdscr, 50, 0, "Input: %c", ch_in );
-			refresh();
 		}
+		refresh();
+		wrefresh( menu_win );
 	}
 
 CLEANUP:
