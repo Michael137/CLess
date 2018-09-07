@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define ARRAY_SIZE( a ) ( sizeof( a ) / sizeof( a[0] ) )
 #define ARRAY_AGG_LEN( a, var )                                                \
@@ -11,15 +12,13 @@
 
 char* choices[] = {"[I] Play", "[O] Load PGN", "[R] Singleplayer", "[Q]uit"};
 
-enum SelectionModes
+void select_choice( MENU* menu, int key )
 {
-	NORMAL_MODE = 0,
-	INSERT_MODE,
-
-	NULL_MODE
-};
-
-static int mode;
+	menu_driver( menu, REQ_CLEAR_PATTERN );
+	menu_driver( menu, '[' );
+	menu_driver( menu, key );
+	wrefresh( menu_win( menu ) );
+}
 
 int main()
 {
@@ -27,13 +26,12 @@ int main()
 	MENU* menu;
 	ITEM** items;
 
-	mode = NORMAL_MODE;
-
 	// Initialize curses system
 	initscr();
 	cbreak();
 	noecho();
 	keypad( stdscr, TRUE );
+	curs_set( 0 );
 
 	// Create window
 	int n_choices = ARRAY_SIZE( choices );
@@ -55,6 +53,7 @@ int main()
 	// Create menu
 	menu = new_menu( items );
 	menu_opts_off( menu, O_SHOWDESC );
+	menu_opts_off( menu, O_ONEVALUE );
 
 	// Set main window and sub window
 	int const height_offset = 1;
@@ -67,36 +66,43 @@ int main()
 	set_menu_mark( menu, ">" );
 
 	refresh();
-
 	post_menu( menu );
+
 	wrefresh( menu_win );
 
-	int ch_in;
+	// TODO: fix menu item highlighting
+	set_current_item( menu, items[n_choices - 1] );
+
+	int ch_in = 0;
 	while( 1 ) {
 		ch_in = wgetch( menu_win );
-		if( mode == NORMAL_MODE || ch_in == 27 ) {
+		if( item_value( items[0] ) == FALSE || ch_in == 27 /* ESC */ ) {
 			switch( ch_in ) {
-			case 'q':
-				mvwprintw( stdscr, 40, 0, "Exiting..." );
-				refresh();
-				wrefresh( menu_win );
-				sleep( 1 /* seconds */ );
+			case 'q': /* Quit */
 				goto CLEANUP;
-			case 'i':
-				mode = INSERT_MODE;
-				// TODO: update menu icons here
+			case 'i': /* Insert mode */
+				// TODO: update menu icons here (to [ESC] Normal Mode)
+				select_choice( menu, ch_in );
+				menu_driver( menu, REQ_TOGGLE_ITEM );
 				mvwprintw( stdscr, 40, 0, "Insert mode enabled (%c)", ch_in );
 				break;
-			case 'o':
+			case 'o': /* Load PGN file */
 				// TODO: load pgn file
+				select_choice( menu, ch_in );
 				mvwprintw( stdscr, 40, 0, "Loading PGN file..." );
 				break;
-			case 'r':
-				// TODO: switch game mode
+			case 'r': /* Cycle through game modes */
+				// TODO: switch game mode (and update to "Multi Player")
+				select_choice( menu, ch_in );
 				mvwprintw( stdscr, 40, 0, "Changing game mode..." );
 				break;
-			case 27: /* ESC */
-				mode = NORMAL_MODE;
+			case 27: /* ESC; Normal mode */
+				set_current_item( menu, items[0] );
+				menu_driver( menu, REQ_TOGGLE_ITEM );
+
+				// TODO: fix menu item highlighting
+				set_current_item( menu, items[n_choices - 1] );
+
 				mvwprintw( stdscr, 40, 0, "Normal mode enabled (%c)", ch_in );
 				break;
 			}
