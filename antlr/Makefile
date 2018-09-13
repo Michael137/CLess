@@ -4,7 +4,7 @@
 ####################
 
 .PHONY:
-build:
+build_:
 	# Lexer/parser cpp files that can be included into project
 	antlr4 -Dlanguage=Cpp RookParser.g4 RookLexer.g4 -listener -visitor -o generated/
 	# To test with grun on command line need to generate and java target
@@ -12,8 +12,8 @@ build:
 	javac generated/Rook*.java
 
 .PHONY:
-run:
-	cd generated && grun Rook game -tokens -gui ../test.in
+run_:
+	cd generated && grun Rook game -tokens -gui ../test/test_basic.in
 
 ####################
 ####################
@@ -21,8 +21,9 @@ run:
 ####################
 
 .PHONY:
-cmake_build:
-	mkdir build && cd build && cmake .. && make -j4
+compile:
+	if [ ! -d build ]; then mkdir build; fi
+	cd build && cmake .. && make -j4
 
 .PHONY:
 clean:
@@ -30,6 +31,7 @@ clean:
 	rm -f *.o
 	rm -rf generated
 	# Delete files generated through CMake
-	rm -rf build
+	# Keep external to prevent from redownloading
+	find build/ -maxdepth 1 ! -name externals ! -name build -exec rm -r "{}" \;
 
-all: clean cmake_build
+all: clean compile
