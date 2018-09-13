@@ -18,6 +18,6 @@ message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CP
 antlr4cpp_process_grammar( rook rook ${CMAKE_CURRENT_SOURCE_DIR}/RookLexer.g4 ${CMAKE_CURRENT_SOURCE_DIR}/RookParser.g4 )
 include_directories(${antlr4cpp_include_dirs_rook})
 
-add_executable(rook main.cpp ${antlr4cpp_src_files_rook})
+add_executable(rook main.cpp Visitor.cpp ${antlr4cpp_src_files_rook})
 add_dependencies(rook antlr4cpp antlr4cpp_generation_rook)
 target_link_libraries(rook antlr4-runtime)

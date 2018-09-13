@@ -1,5 +1,6 @@
 #include "RookLexer.h"
 #include "RookParser.h"
+#include "Visitor.h"
 #include <antlr4-runtime.h>
 #include <iostream>
 
@@ -29,6 +30,10 @@ int main()
 	antlr4::tree::ParseTree* tree = parser.game();
 
 	std::cout << tree->toStringTree( &parser ) << std::endl;
+
+	rook::RookParser::GameContext* parse_tree = parser.game();
+	rook::Visitor visitor;
+	visitor.visitGame( parse_tree );
 
 	return 0;
 }
