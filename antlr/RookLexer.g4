@@ -1,11 +1,4 @@
-grammar Rook ;
-
-/*
- * Parser rules
- */
-game		:		line+ EOF ;
-line		:		COMMENT* MOVE_NUM_LABEL (SCORE | move) (SCORE | move) NEWLINE ;
-move		:		((((PIECE? (ALPH_IDX? 'x' )? CELL) | CASTLE_SHORT | CASTLE_LONG | PROMOTION) ('+'|'#')?) | WHITESPACE+ | COMMENT+ ) ;
+lexer grammar RookLexer ;
 
 /*
  * Lexer rules
@@ -27,3 +20,7 @@ NEWLINE		:		('\r'? '\n' | '\r')+ ;
 WHITESPACE	:		' ' -> skip ;
 COMMENT		:		'(' TEXT* ')' -> skip;
 TEXT		:		~[()] ;
+
+CAPTURE		:		'x' ;
+CHECK		:		'+' ;
+MATE		:		'#' ;

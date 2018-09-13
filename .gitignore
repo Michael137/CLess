@@ -1,8 +1,8 @@
 *.out
 *.o
-antlr-build/
 *.java
 *.class
 *.interp
 *.tokens
 tags
+generated/
