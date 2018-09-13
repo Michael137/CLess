@@ -24,6 +24,8 @@ clean:
 	# Delete files generated through CMake
 	rm -f Makefile
 	rm -f CMakeCache.txt
-	rm -rf cmakefiles
+	rm -f cmake_install.cmake
+	rm -rf CMakeFiles
+	rm -rf externals
 
 all: clean build
