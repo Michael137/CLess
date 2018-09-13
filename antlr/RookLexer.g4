@@ -16,11 +16,11 @@ PROMOTION		:		ALPH_IDX ('0'|'1') PIECE ;
 MOVE_NUM_LABEL	:		NUMBER+ [.] ;
 SCORE			:		NUMBER+ '-' NUMBER+ ;
 
+CAPTURE		:		'x' ;
+CHECK		:		'+' ;
+MATE		:		'#' ;
+
 NEWLINE		:		('\r'? '\n' | '\r')+ ;
 WHITESPACE	:		' ' -> skip ;
 COMMENT		:		'(' TEXT* ')' -> skip;
 TEXT		:		~[()] ;
-
-CAPTURE		:		'x' ;
-CHECK		:		'+' ;
-MATE		:		'#' ;
