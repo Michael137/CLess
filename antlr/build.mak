@@ -1,3 +1,8 @@
+####################
+#################### Targets below currently not working from non-interactive 
+#################### shell due to alias expansion issues 
+####################
+
 .PHONY:
 build:
 	# Lexer/parser cpp files that can be included into project
@@ -10,16 +15,21 @@ build:
 run:
 	cd generated && grun Rook game -tokens -gui ../test.in
 
+####################
+####################
+####################
+####################
+
+.PHONY:
+cmake_build:
+	mkdir build && cd build && cmake .. && make -j4
+
 .PHONY:
 clean:
 	rm -f *.out
 	rm -f *.o
 	rm -rf generated
 	# Delete files generated through CMake
-	rm -f Makefile
-	rm -f CMakeCache.txt
-	rm -f cmake_install.cmake
-	rm -rf CMakeFiles
-	rm -rf externals
+	rm -rf build
 
-all: clean build
+all: clean cmake_build
