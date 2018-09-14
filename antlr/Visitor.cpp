@@ -4,14 +4,14 @@
 
 antlrcpp::Any rook::Visitor::visitGame( rook::RookParser::GameContext* ctx )
 {
-//	visitLine( ctx->line( 0 ) );
+	visitLine( ctx->line( 0 ) );
 	return nullptr;
 }
 
 antlrcpp::Any rook::Visitor::visitLine( rook::RookParser::LineContext* ctx )
 {
-//	std::cout << __LINE__ << ":" << __func__
-//			  << ": matched : " << ctx->getText();
+	std::cout << __LINE__ << ":" << __func__
+			  << ": matched : " << std::endl;
 //
 //	for( auto move : ctx->moves ) {
 //		puts( "CALLED" );

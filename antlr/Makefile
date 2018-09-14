@@ -26,12 +26,17 @@ compile:
 	cd build && cmake .. && make -j4
 
 .PHONY:
+tags:
+	ctags -R --c++-kinds=+p --fields=+iaS --extra=+q 
+
+.PHONY:
 clean:
 	rm -f *.out
 	rm -f *.o
+	rm -f tags
 	rm -rf generated
 	# Delete files generated through CMake
 	# Keep external to prevent from redownloading
 	find build/ -maxdepth 1 ! -name externals ! -name build -exec rm -r "{}" \;
 
-all: clean compile
+all: clean compile tags
