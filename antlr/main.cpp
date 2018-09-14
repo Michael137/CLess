@@ -1,6 +1,6 @@
 #include "RookLexer.h"
 #include "RookParser.h"
-//#include "Visitor.h"
+#include "Visitor.h"
 #include <antlr4-runtime.h>
 #include <iostream>
 
@@ -34,8 +34,8 @@ int main()
 	std::cout << tree->toStringTree( &parser ) << std::endl;
 
 	RookParser::GameContext* parse_tree = parser.game();
-//	Visitor visitor;
-//	visitor.visitGame( parse_tree );
+	Visitor visitor;
+	visitor.visitGame( parse_tree );
 
 	return 0;
 }

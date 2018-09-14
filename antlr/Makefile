@@ -1,5 +1,3 @@
-all: clean compile tags
-
 .PHONY:
 compile:
 	if [ ! -d build ]; then mkdir build; fi
@@ -20,6 +18,8 @@ clean:
 	if [ -d build ]; then \
 		find build/ -maxdepth 1 ! -name externals ! -name build -exec rm -r "{}" \;; \
 	fi
+
+all: clean compile tags
 
 ####################
 #################### Targets below currently not working from non-interactive 

@@ -37,7 +37,7 @@ set(rook-GENERATED_SRC
   ${ANTLR4CPP_GENERATED_SRC_DIR}/rook/RookParserVisitor.cpp
 )
 
-add_executable(rook_antlr ${rook-GENERATED_SRC} main.cpp)
+add_executable(rook_antlr ${rook-GENERATED_SRC} main.cpp Visitor.cpp)
 add_custom_command(
     OUTPUT ${rook-GENERATED_SRC}
     COMMAND
