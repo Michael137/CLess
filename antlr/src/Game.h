@@ -28,7 +28,7 @@ class GameMove
 
   public:
 	std::string ToString() { return ""; }
-	std::string Move() { return move; }
+	std::string const& Move() { return move; }
 };
 using Move = GameMove;
 
@@ -38,12 +38,18 @@ class State
 	std::pair<Move, Move> moves;
 	int round;
 	bool isFinal;
+
+  public:
+	std::pair<Move, Move> const& Moves() { return moves; }
 };
 
 class Game
 {
   private:
 	std::vector<State> states;
+
+  public:
+	std::vector<State> const& States() { return states; }
 };
 
 } // namespace rook

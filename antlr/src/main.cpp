@@ -35,10 +35,10 @@ int main()
 
 	std::cout << tree->toStringTree( &parser ) << std::endl;
 
-	RookParser::GameContext* parse_tree = parser.game();
 	Visitor visitor;
-	// visitor.visitGame( parse_tree );
-	visitor.visitGame( reinterpret_cast<RookParser::GameContext*>( tree ) );
+	Game game = visitor.visitGame( reinterpret_cast<RookParser::GameContext*>( tree ) );
+
+	// Call into ncurses here
 
 	return 0;
 }

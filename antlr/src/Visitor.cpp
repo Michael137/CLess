@@ -1,5 +1,6 @@
 #include "Visitor.h"
 
+#include "Game.h"
 #include <cstdio>
 
 antlrcpp::Any rook::Visitor::visitGame( rook::RookParser::GameContext* ctx )
@@ -10,7 +11,8 @@ antlrcpp::Any rook::Visitor::visitGame( rook::RookParser::GameContext* ctx )
 		for( auto context : ctxs )
 			visitLine( context );
 	}
-	return nullptr;
+
+	return Game();
 }
 
 antlrcpp::Any rook::Visitor::visitLine( rook::RookParser::LineContext* ctx )
@@ -27,12 +29,15 @@ antlrcpp::Any rook::Visitor::visitLine( rook::RookParser::LineContext* ctx )
 
 antlrcpp::Any rook::Visitor::visitMove( rook::RookParser::MoveContext* ctx )
 {
-	std::cout << "\t\t" << "move visited" << std::endl;
-	if(ctx->CELL())
-		std::cout << "\t\t\t" << "matched cell: " << ctx->CELL()->getText() << std::endl;
+	std::cout << "\t\t"
+			  << "move visited" << std::endl;
+	if( ctx->CELL() )
+		std::cout << "\t\t\t"
+				  << "matched cell: " << ctx->CELL()->getText() << std::endl;
 
-	if(ctx->PIECE())
-		std::cout << "\t\t\t" << "matched piece: " << ctx->PIECE()->getText() << std::endl;
+	if( ctx->PIECE() )
+		std::cout << "\t\t\t"
+				  << "matched piece: " << ctx->PIECE()->getText() << std::endl;
 
-	return nullptr;
+	return Move();
 }
