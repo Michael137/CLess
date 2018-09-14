@@ -3,11 +3,11 @@ all: clean compile tags
 .PHONY:
 compile:
 	if [ ! -d build ]; then mkdir build; fi
-	cd build && cmake .. && make -j4
+	cd build && cmake .. && make #-j4
 
 .PHONY:
 tags:
-	ctags -R --c++-kinds=+p --fields=+iaS --extra=+q 
+	ctags -R --c++-kinds=+p --fields=+iaS --extras=+q 
 
 .PHONY:
 clean:

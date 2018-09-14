@@ -31,15 +31,17 @@ message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CP
 #target_link_libraries(rook_antlr antlr4-runtime)
 
 set(rook-GENERATED_SRC
-  ${PROJECT_SOURCE_DIR}/rook/RookLexer.cpp
-  ${PROJECT_SOURCE_DIR}/rook/RookParser.cpp
-  ${PROJECT_SOURCE_DIR}/rook/RookParserBaseVisitor.cpp
-  ${PROJECT_SOURCE_DIR}/rook/RookParserVisitor.cpp
+  ${ANTLR4CPP_GENERATED_SRC_DIR}/rook/RookLexer.cpp
+  ${ANTLR4CPP_GENERATED_SRC_DIR}/rook/RookParser.cpp
+  ${ANTLR4CPP_GENERATED_SRC_DIR}/rook/RookParserBaseVisitor.cpp
+  ${ANTLR4CPP_GENERATED_SRC_DIR}/rook/RookParserVisitor.cpp
 )
 
 add_executable(rook_antlr ${rook-GENERATED_SRC} main.cpp)
 add_custom_command(
     OUTPUT ${rook-GENERATED_SRC}
+    COMMAND
+    ${CMAKE_COMMAND} -E make_directory ${ANTLR4CPP_GENERATED_SRC_DIR}
     COMMAND "${Java_JAVA_EXECUTABLE}" -jar "${ANTLR4CPP_JAR_LOCATION}" -Werror -Dlanguage=Cpp RookLexer.g4 RookParser.g4 -no-listener -visitor -o "${ANTLR4CPP_GENERATED_SRC_DIR}/rook" -package rook 
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
