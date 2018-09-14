@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 17)
-include_directories( ${CMAKE_CURRENT_BINARY_DIR})
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 
 list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 
@@ -10,7 +10,6 @@ include( ExternalAntlr4Cpp )
 include_directories( ${ANTLR4CPP_INCLUDE_DIRS} )
 link_directories( ${ANTLR4CPP_LIBS} )
 message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CPP_INCLUDE_DIRS} ")
-
 
 ## Generate parser/lexer from .g4 specs
 ## antlr4cpp_process_grammar() Macro args:
@@ -41,7 +40,7 @@ set(generated_src_dir
 )
 set(generated_include_dir ${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr_proj_namespace})
 
-add_executable(${antlr_output_exe} ${generated_src_dir} main.cpp Visitor.cpp)
+add_executable(${antlr_output_exe} ${generated_src_dir} src/main.cpp src/Visitor.cpp)
 add_custom_command(
     OUTPUT ${generated_src_dir}
     COMMAND

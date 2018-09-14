@@ -1,3 +1,6 @@
+#ifndef VISITOR_IN_H
+#define VISITOR_IN_H
+
 #include "RookParser.h"
 #include "RookParserBaseVisitor.h"
 #include <antlr4-runtime.h>
@@ -13,3 +16,5 @@ class Visitor : rook::RookParserBaseVisitor
 };
 
 } // namespace
+
+#endif // VISITOR_IN_H
