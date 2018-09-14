@@ -29,9 +29,9 @@ clean:
 .PHONY:
 build_:
 	# Lexer/parser cpp files that can be included into project
-	antlr4 -Dlanguage=Cpp grammar/RookParser.g4 grammar/RookLexer.g4 -listener -visitor -o generated/
+	antlr4 -Dlanguage=Cpp grammar/RookParser.g4 grammar/RookLexer.g4 -listener -visitor -o generated/grammar
 	# To test with grun on command line need to generate and java target
-	antlr4 grammar/RookParser.g4 grammar/RookLexer.g4 -listener -visitor -o generated/
+	antlr4 grammar/RookParser.g4 grammar/RookLexer.g4 -listener -visitor -o generated/grammar
 	javac generated/Rook*.java
 
 .PHONY:

@@ -1,8 +1,10 @@
 #include "RookLexer.h"
 #include "RookParser.h"
-#include "Visitor.h"
+//#include "Visitor.h"
 #include <antlr4-runtime.h>
 #include <iostream>
+
+using namespace rook;
 
 int main()
 {
@@ -18,7 +20,7 @@ int main()
 
 	antlr4::ANTLRInputStream input(stream);
 
-	rook::RookLexer lexer( &input );
+	RookLexer lexer( &input );
 	antlr4::CommonTokenStream tokens( &lexer );
 
 	tokens.fill();
@@ -26,14 +28,14 @@ int main()
 		std::cout << token->toString() << std::endl;
 	}
 
-	rook::RookParser parser( &tokens );
+	RookParser parser( &tokens );
 	antlr4::tree::ParseTree* tree = parser.game();
 
 	std::cout << tree->toStringTree( &parser ) << std::endl;
 
-	rook::RookParser::GameContext* parse_tree = parser.game();
-	rook::Visitor visitor;
-	visitor.visitGame( parse_tree );
+	RookParser::GameContext* parse_tree = parser.game();
+//	Visitor visitor;
+//	visitor.visitGame( parse_tree );
 
 	return 0;
 }
