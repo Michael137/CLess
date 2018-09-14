@@ -16,7 +16,7 @@ int main()
 //4. Bxc6 dxc6
 //5. O-O 1-0 (black resigns)
 //)" );
-	std::ifstream stream("test/test_no_newlines.in");
+	std::ifstream stream("test/test_basic.in");
 
 	antlr4::ANTLRInputStream input(stream);
 
@@ -35,7 +35,8 @@ int main()
 
 	RookParser::GameContext* parse_tree = parser.game();
 	Visitor visitor;
-	visitor.visitGame( parse_tree );
+	//visitor.visitGame( parse_tree );
+	visitor.visitGame( reinterpret_cast<RookParser::GameContext*>( tree ) );
 
 	return 0;
 }
