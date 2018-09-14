@@ -1,7 +1,7 @@
 .PHONY:
 compile:
 	if [ ! -d build ]; then mkdir build; fi
-	cd build && cmake .. && make #-j4
+	cd build && cmake .. -Dantlr_proj_namespace=rook -Dantlr_output_exe=rook_antlr && make #-j4
 
 .PHONY:
 tags:
