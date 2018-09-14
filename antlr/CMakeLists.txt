@@ -51,4 +51,5 @@ add_custom_command(
 )
 
 include_directories(${generated_include_dir})
+add_dependencies(${antlr_output_exe} antlr4cpp)
 target_link_libraries(${antlr_output_exe} antlr4-runtime)
