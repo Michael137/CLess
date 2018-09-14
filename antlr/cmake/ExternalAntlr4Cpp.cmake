@@ -200,6 +200,7 @@ macro(antlr4cpp_process_grammar
     DEPENDS "${antlr4cpp_grammar_lexer}" "${antlr4cpp_grammar_parser}"
     )
 
+  message( STATUS "DEBUG generated src dir: ·${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}" )
   # Find all the input files
   FILE(GLOB generated_files ${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}/*.cpp)
 
